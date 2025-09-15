@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState } from "react";
 import { auth } from "../auth/firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import { toastErrorNotify, toastSuccessNotify } from "../helpers/ToastNotify";
 
 const AuthContext = createContext();
 //* with custom hook
@@ -20,10 +21,11 @@ const AuthProvider = ({ children }) => {
         password
       );
       navigate("/login");
+      toastSuccessNotify("Registered successfully");
 
       console.log(userCredential);
     } catch (error) {
-      console.log(error);
+      toastErrorNotify(error.message);
     }
   };
 
@@ -39,12 +41,14 @@ const AuthProvider = ({ children }) => {
         password
       );
       navigate("/");
-
+      toastSuccessNotify("Logged in successfully");
       console.log(userCredential);
     } catch (error) {
-      console.log(error);
+      toastErrorNotify(error.message);
     }
   };
+
+
 
   const values = { currentUse, createUser, signIn };
   return <AuthContext.Provider value={values}>{children}</AuthContext.Provider>;
