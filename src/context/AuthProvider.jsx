@@ -48,9 +48,18 @@ const AuthProvider = ({ children }) => {
     }
   };
 
+  const logOut = () => {
+    signOut(auth)
+      .then(() => {
+        toastSuccessNotify("Logged out successfully");
+        // Sign-out successful.
+      })
+      .catch((error) => {
+        // An error happened.
+      });
+  };
 
-
-  const values = { currentUse, createUser, signIn };
+  const values = { currentUse, createUser, signIn, logOut};
   return <AuthContext.Provider value={values}>{children}</AuthContext.Provider>;
 };
 
