@@ -1,7 +1,14 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { auth } from "../auth/firebase";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signOut,
+  updateProfile,
+} from "firebase/auth";
 import { toastErrorNotify, toastSuccessNotify } from "../helpers/ToastNotify";
+import { useNavigate } from "react-router-dom";
 
 const AuthContext = createContext();
 //* with custom hook
@@ -11,8 +18,13 @@ export const useAuthContext = () => {
 
 const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(false);
+  const navigate = useNavigate();
 
-  const createUser = async (email, password) => {
+  useEffect(() => {
+    userObserver();
+  }, []);
+
+  const createUser = async (email, password, displayName) => {
     try {
       //? yeni bir kullanıcı oluşturmak için kullanılan firebase metodu
       const userCredential = await createUserWithEmailAndPassword(
@@ -20,9 +32,12 @@ const AuthProvider = ({ children }) => {
         email,
         password
       );
+      //? kullanıcı profilini güncellemek için kullanılan firebase metodu
+      await updateProfile(auth.currentUser, {
+        displayName,
+      });
       navigate("/login");
       toastSuccessNotify("Registered successfully");
-
       console.log(userCredential);
     } catch (error) {
       toastErrorNotify(error.message);
@@ -59,7 +74,23 @@ const AuthProvider = ({ children }) => {
       });
   };
 
-  const values = { currentUse, createUser, signIn, logOut};
+  const userObserver = () => {
+    //? Kullanıcının signin olup olmadığını takip eden ve kullanıcı değiştiğinde yeni kullanıcıyı response olarak dönen firebase metodu
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // console.log("logged in");
+        const { email, displayName, photoURL } = user;
+        setCurrentUser({ email, displayName, photoURL });
+      
+      } else {
+        // User is signed out
+        setCurrentUser(false);
+        // console.log("logged out");
+      }
+    });
+  };
+
+  const values = { currentUse, createUser, signIn, logOut };
   return <AuthContext.Provider value={values}>{children}</AuthContext.Provider>;
 };
 

@@ -12,18 +12,17 @@ const Register = () => {
     password: "",
   });
 
-  const {createUser}= useAuthContext()
+  const { createUser } = useAuthContext();
 
   const handleChange = (e) =>
     setInfo({ ...info, [e.target.name]: e.target.value });
-  const {email, password} = info
-
-  const handleSubmit = (e) => {
+  const { email, password, firstName, lastName } = info;
+  const handlesubmit = (e) => {
     e.preventDefault();
-    createUser(email, password)
+    const displayName = `${firstName} ${lastName}`;
+    createUser(email, password, displayName);
     console.log(info);
   };
-
   return (
     <div className="flex justify-center">
       <div className="overflow-hidden flex-1 h-screen justify-center items-center dark:bg-gray-dark-main">
