@@ -81,7 +81,6 @@ const AuthProvider = ({ children }) => {
         // console.log("logged in");
         const { email, displayName, photoURL } = user;
         setCurrentUser({ email, displayName, photoURL });
-      
       } else {
         // User is signed out
         setCurrentUser(false);
@@ -90,7 +89,27 @@ const AuthProvider = ({ children }) => {
     });
   };
 
-  const values = { currentUse, createUser, signIn, logOut };
+  //* https://console.firebase.google.com/
+  //* => Authentication => sign-in-method => enable Google
+  //! Google ile girişi enable yap
+  //* => Authentication => settings => Authorized domains => add domain
+  //! Projeyi deploy ettikten sonra google sign-in çalışması için domain listesine deploy linkini ekle
+  const googleProvider = () => {
+    //? Google ile giriş yapılması için kullanılan firebase metodu
+    const provider = new GoogleAuthProvider();
+    //? Açılır pencere ile giriş yapılması için kullanılan firebase metodu
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        navigate("/");
+        toastSuccessNotify("Logged in successfully");
+      })
+      .catch((error) => {
+        // Handle Errors here.
+        toastErrorNotify(error.message);
+      });
+  };
+
+  const values = { currentUser, createUser, signIn, logOut, googleProvider, };
   return <AuthContext.Provider value={values}>{children}</AuthContext.Provider>;
 };
 
