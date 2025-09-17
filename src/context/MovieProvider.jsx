@@ -18,17 +18,20 @@ const MovieProvider = ({ children }) => {
     setLoading(true);
     axios
       .get(FEATURED_API)
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
+      .then((res) => setMovies(res.data.results))
+      .catch((err) => console.log(err))
+      .finally(() => setLoading(false));
   };
 
   useEffect(() => {
-    getMovies();
+    getMovies(FEATURED_API);
   }, []);
 
-    // console.log(movies)
+  //   console.log(movies);
   return (
-    <MovieContext.Provider value={null}>{children}</MovieContext.Provider>
+    <MovieContext.Provider value={{ movies, loading, getMovies }}>
+      {children}
+    </MovieContext.Provider>
   );
 };
 
