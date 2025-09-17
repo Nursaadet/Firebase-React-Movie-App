@@ -133,3 +133,21 @@ input:-webkit-autofill:focus input:-webkit-autofill {
   -webkit-box-shadow: 0 0 0px 0px #28292d inset !important;
   transition: background-color 5000s ease-in-out 0s !important;
 }
+
+@layer utilities {
+  .search-cancel-custom::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 18px;
+    width: 18px;
+    border-radius: 9999px; /* tam yuvarlak */
+    background: #ef4444 url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' stroke='white' stroke-width='2' viewBox='0 0 24 24'><line x1='6' y1='6' x2='18' y2='18'/><line x1='6' y1='18' x2='18' y2='6'/></svg>") center no-repeat;
+    background-size: 10px 10px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+
+  .search-cancel-custom::-webkit-search-cancel-button:hover {
+    background-color: darkred; /* koyu kırmızı hover */
+  }
+}
