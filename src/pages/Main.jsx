@@ -26,10 +26,9 @@ const Main = () => {
 
   console.log({ movies, loading });
   return (
-    
     <div>
       <TrendingSlider />
-      <form onSubmit={handleSubmit} className="flex justify-center p-3 pt-11">
+      <form onSubmit={handleSubmit} className="flex justify-center p-3 pt-16">
         <input
           type="search"
           className="w-80 h-8 rounded-md p-1 m-2 search-cancel-custom"
@@ -38,15 +37,13 @@ const Main = () => {
         />
         <button className="btn-danger-bordered">Search</button>
       </form>
-      
+
       <div className="flex justify-center flex-wrap">
         {loading ? (
           <div
             className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"
             role="status"
-          >
-            
-          </div>
+          ></div>
         ) : (
           movies.map((movie) => <MovieCard key={movie.id} {...movie} />)
         )}
