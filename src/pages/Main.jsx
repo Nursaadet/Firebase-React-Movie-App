@@ -3,6 +3,7 @@ import { useMovieContext } from "../context/MovieProvider";
 import MovieCard from "../components/MovieCard";
 import { toastWarnNotify } from "../helpers/ToastNotify";
 import { useAuthContext } from "../context/AuthProvider";
+import TrendingSlider from "../components/TrendingSlider";
 
 const API_KEY = process.env.REACT_APP_TMDB_KEY;
 const SEARCH_API = `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=`;
@@ -25,7 +26,9 @@ const Main = () => {
 
   console.log({ movies, loading });
   return (
+    
     <div>
+      <TrendingSlider />
       <form onSubmit={handleSubmit} className="flex justify-center p-3 pt-11">
         <input
           type="search"
@@ -35,6 +38,7 @@ const Main = () => {
         />
         <button className="btn-danger-bordered">Search</button>
       </form>
+      
       <div className="flex justify-center flex-wrap">
         {loading ? (
           <div
