@@ -25,7 +25,7 @@ export default function Navbar() {
 
             <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
               {currentUser && (
-                <h5 className="mr-2 capitalize">{currentUser?.displayName} </h5>
+                <h5 className="mr-2 capitalize hidden sm:block">{currentUser?.displayName} </h5>
               )}
               <Switch />
               {/* Profile dropdown */}
